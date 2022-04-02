@@ -1,0 +1,1 @@
+java -jar work_git_hard-1.0-SNAPSHOT.jar un: pw: operation:push repo-url: target-dir:'../../test_notifier' branch:master file-pattern:'.' commit-msg:'Message of commit2222'
