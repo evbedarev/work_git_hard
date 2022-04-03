@@ -1,6 +1,7 @@
 package enter;
 
-import git_operations.GitLog;
+import git_operations.GitOperations;
+import git_operations.GitWorker;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ public class RunChecker {
     public static void main(String[] args) throws GitAPIException, IOException {
         ReadArgs readArgs = new ReadArgs();
         Map<String,String> arg_map = readArgs.readArgs(args);
-        GitLog gitLog = new GitLog(arg_map);
+        GitOperations gitLog = new GitWorker(arg_map);
         if (args[0].equals("--help") || args[0].equals("-help")) {
             printHelp();
             return;

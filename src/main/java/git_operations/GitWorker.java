@@ -1,16 +1,24 @@
-package new_git_operations;
+package git_operations;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.TextProgressMonitor;
+import java.util.*;
 
-import java.util.Map;
-import java.util.Optional;
-
-public class GitWorkerPushTag extends GitWorker implements GitOperationPushTag{
-    public GitWorkerPushTag(Map<String, String> arg_map) {
+public class GitWorker extends GitWorkerAbs implements GitOperations {
+    public GitWorker(Map<String,String> arg_map) {
         super(arg_map);
+    }
+
+    @Override
+    public void push() throws GitAPIException {
+        System.out.printf("\n >>> Git add files: %s <<<\n",arg_map.get("file-pattern"));
+        git.add().addFilepattern(arg_map.get("file-pattern")).setUpdate(true).call();
+        System.out.printf("\n >>> Git commit message: %s <<<\n",arg_map.get("commit-msg"));
+        git.commit().setMessage(arg_map.get("commit-msg")).call();
+        System.out.printf("\n >>> Git push to repo %s <<<\n",arg_map.get("repo-url") );
+        git.push().setCredentialsProvider(creds).setPushAll().call();
     }
 
     @Override
@@ -31,6 +39,5 @@ public class GitWorkerPushTag extends GitWorker implements GitOperationPushTag{
             git.checkout().setProgressMonitor(consoleProgressMonitor).setCreateBranch(true).setName(defaultBranch)
                     .setStartPoint(developBranch.get()).call();
         }
-
     }
 }

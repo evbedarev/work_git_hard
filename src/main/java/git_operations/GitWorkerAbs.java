@@ -1,4 +1,4 @@
-package new_git_operations;
+package git_operations;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -15,12 +15,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
-public abstract class GitWorker {
+public abstract class GitWorkerAbs {
     Map<String,String> arg_map;
     Git git;
     CredentialsProvider creds;
 
-    public GitWorker(Map<String,String> arg_map) {
+    public GitWorkerAbs(Map<String,String> arg_map) {
         this.arg_map = arg_map;
         creds = new UsernamePasswordCredentialsProvider(arg_map.get("un"),arg_map.get("pw"));
     }
@@ -40,6 +40,7 @@ public abstract class GitWorker {
                     .call().getRepository();
         } else {
             Git.open(git_path.toFile()).pull().setCredentialsProvider(creds).call();//.call().getRepository();
+            System.out.printf("\n>>> Repository exists at %s \n",arg_map.get("target-dir"));
             repo = Git.open(git_path.toFile()).getRepository();
             consoleProgressMonitor = new TextProgressMonitor(new PrintWriter(System.out));
         }
